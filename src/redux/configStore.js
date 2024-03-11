@@ -1,15 +1,9 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import createSagaMiddleware from "redux-saga";
-import { rootSaga } from "./saga/rootSaga";
+import { configureStore } from "@reduxjs/toolkit";
+import LoginReducer from "./reducers/LoginReducer";
 
-// create the saga middleware
-const sagaMiddleware = createSagaMiddleware();
-
-const rootReducer = combineReducers({
-  // all Reducer here
+export const store = configureStore({
+  reducer: {
+    // reducer
+    LoginReducer: LoginReducer,
+  },
 });
-
-export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-
-// Run Saga
-sagaMiddleware.run(rootSaga);
