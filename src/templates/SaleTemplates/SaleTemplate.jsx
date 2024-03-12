@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 // antd
 import { Breadcrumb, Flex, Layout, Menu, theme } from "antd";
@@ -23,7 +23,7 @@ const activeStyle = (isActive, collapse) => {
   };
 };
 
-export default function AdminTemplate(props) {
+export default function SaleTemplate(prosp) {
   const [collapsed, setCollapsed] = useState(true);
 
   const pathItem = usePathList();
@@ -86,82 +86,18 @@ export default function AdminTemplate(props) {
             }}
           >
             <NavLink
-              to="accounts"
+              to="products"
               className={({ isActive }) => {
                 return isActive ? "active" : "";
               }}
               style={({ isActive }) => activeStyle(isActive, collapsed)}
             >
               <i
-                className="fa fa-users"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Accounts"}
-            </NavLink>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              // height: "50px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <button
-              style={{
-                backgroundColor: "#293543",
-                width: "100%",
-                height: "50px",
-                display: "flex",
-                alignItems: "center",
-                padding: "0px 12px",
-                textDecoration: "none",
-                color: "white",
-                justifyContent: collapsed ? "center" : "flex-start",
-              }}
-              disabled={collapsed ? true : false}
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#warehouseCollapse"
-              aria-expanded="false"
-              aria-controls="warehouseCollapse"
-            >
-              <i
                 className="fab fa-dropbox"
                 style={{ marginRight: "6px", fontSize: "20px" }}
               />{" "}
-              {collapsed ? "" : "Warehouse"}
-            </button>
-            <div
-              style={{
-                width: "100%",
-                textAlign: "center",
-              }}
-              className={`collapse ${collapsed ? "" : "show"}`}
-              id="warehouseCollapse"
-            >
-              <NavLink
-                to="warehouse/products"
-                className={({ isActive }) => {
-                  return isActive ? "active" : "";
-                }}
-                style={({ isActive }) => {
-                  return activeStyle(isActive);
-                }}
-              >
-                Products
-              </NavLink>
-              <NavLink
-                to="warehouse/materials"
-                className={({ isActive }) => {
-                  return isActive ? "active" : "";
-                }}
-                style={({ isActive }) => activeStyle(isActive)}
-              >
-                Materials
-              </NavLink>
-            </div>
+              {collapsed ? "" : "Product"}
+            </NavLink>
           </div>
           <div
             style={{
@@ -182,7 +118,7 @@ export default function AdminTemplate(props) {
                 className="fa fa-file-invoice"
                 style={{ marginRight: "6px", fontSize: "20px" }}
               />{" "}
-              {collapsed ? "" : "Orders"}
+              {collapsed ? "" : "Order"}
             </NavLink>
           </div>
           <div
@@ -204,7 +140,7 @@ export default function AdminTemplate(props) {
                 className="fa fa-handshake"
                 style={{ marginRight: "6px", fontSize: "20px" }}
               />{" "}
-              {collapsed ? "" : "Customers"}
+              {collapsed ? "" : "Customer"}
             </NavLink>
           </div>
           <div
@@ -229,35 +165,9 @@ export default function AdminTemplate(props) {
               {collapsed ? "" : "Deliveries"}
             </NavLink>
           </div>
-          <div
-            style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <NavLink
-              to="productions"
-              className={({ isActive }) => {
-                return isActive ? "active" : "";
-              }}
-              style={({ isActive }) => activeStyle(isActive)}
-            >
-              <i
-                className="fa fa-industry"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Productions"}
-            </NavLink>
-          </div>
         </div>
       </Sider>
-      <Layout
-        style={{
-          marginLeft: 50,
-        }}
-      >
+      <Layout style={{ marginLeft: 50 }}>
         <Header
           style={{
             // padding: 0,
