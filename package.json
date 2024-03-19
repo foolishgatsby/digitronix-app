@@ -11,6 +11,8 @@
     "antd": "^5.15.1",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
+    "formik": "^2.4.5",
+    "html-react-parser": "^5.1.8",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",

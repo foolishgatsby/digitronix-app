@@ -1,12 +1,48 @@
 import { Input, Select, Space, Table } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { setComponentsAction } from "../../../redux/reducers/FunctionPopupReducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllProductApi,
+  setLimit,
+} from "../../../redux/reducers/ProductReducer";
 
 export default function ProductAdmin(props) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [searchOption, setSearchOption] = useState({
-    productName: "",
-    category: [],
+    keyword: "",
+    category_id: null,
     tag: [],
   });
+
+  const { productList, page, limit, totalPage, loading } = useSelector(
+    (state) => state.ProductReducer
+  );
+
+  const fetchProductData = (page, limit) => {
+    dispatch(getAllProductApi(page, limit));
+  };
+
+  useEffect(() => {
+    let Components = [
+      {
+        tooltip: "Import product",
+        icon: `<i className="fa-solid fa-right-to-bracket" />`,
+        contentComponentType: "FormImportProduct",
+      },
+      {
+        tooltip: "Export product",
+        icon: `<i className="fa-solid fa-right-from-bracket" />`,
+        contentComponentType: "FormExportProduct",
+      },
+    ];
+    dispatch(setComponentsAction(Components));
+
+    fetchProductData(page, limit);
+  }, []);
 
   // Submit Search
   const handleSubmit = (e) => {
@@ -20,13 +56,13 @@ export default function ProductAdmin(props) {
       dataIndex: "image",
       key: "image",
       render: (text, record, index) => (
-        <img style={{ width: 50 }} src={text} alt={`product ${index}`} />
+        <img style={{ width: 50 }} src={record.img} alt={record.name} />
       ),
     },
     {
-      title: "Name",
-      dataIndex: "productName",
-      key: "productName",
+      title: "Product's Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Quantity",
@@ -56,26 +92,86 @@ export default function ProductAdmin(props) {
   /**
    * Fake data
    */
-  const data = [
-    {
-      key: "1",
-      image: "https://picsum.photos/200",
-      productName: "Product 1",
-      quantity: 4000,
-    },
-    {
-      key: "2",
-      image: "https://picsum.photos/200",
-      productName: "Product 2",
-      quantity: 500,
-    },
-    {
-      key: "3",
-      image: "https://picsum.photos/200",
-      productName: "Product 3",
-      quantity: 60000,
-    },
-  ];
+  // const data = [
+  //   {
+  //     key: "1",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 1",
+  //     quantity: 4000,
+  //   },
+  //   {
+  //     key: "2",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 2",
+  //     quantity: 500,
+  //   },
+  //   {
+  //     key: "3",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "4",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "5",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "6",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "7",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "8",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "9",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "10",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "11",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "12",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  //   {
+  //     key: "13",
+  //     image: "https://picsum.photos/200",
+  //     productName: "Product 3",
+  //     quantity: 60000,
+  //   },
+  // ];
   const importData = [
     {
       key: "1",
@@ -166,6 +262,9 @@ export default function ProductAdmin(props) {
               fontSize: "14px",
               borderRadius: "15px",
             }}
+            onClick={() => {
+              navigate("productlist");
+            }}
           >
             <i className="fa fa-list-alt" style={{ marginRight: "5px" }} />
             Product List
@@ -177,7 +276,25 @@ export default function ProductAdmin(props) {
             <h5>
               <i className="fas fa-list" /> Product List
             </h5>
-            <Table columns={columns} dataSource={data} />
+            <Table
+              rowKey={(record) => record.id}
+              columns={columns}
+              dataSource={productList}
+              loading={loading}
+              pagination={{
+                showSizeChanger: true,
+                total: totalPage,
+                pageSize: limit,
+                onShowSizeChange: (current, size) => {
+                  if (current === page && size === limit) return;
+                  fetchProductData(current - 1, size);
+                },
+                onChange: (currentPage, pageSize) => {
+                  if (currentPage === page && pageSize === limit) return;
+                  fetchProductData(page - 1, pageSize);
+                },
+              }}
+            />
           </div>
           <form className="col-span-1" onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -196,6 +313,7 @@ export default function ProductAdmin(props) {
               </label>
               <Select
                 id="category"
+                name="category"
                 mode="multiple"
                 allowClear
                 style={{
@@ -203,7 +321,10 @@ export default function ProductAdmin(props) {
                 }}
                 placeholder="Please select categorys"
                 defaultValue={[]}
-                onChange={() => {}}
+                onSelect={(value) => console.log(value)}
+                onChange={(value, option) => {
+                  console.log(value, option);
+                }}
                 options={[
                   { label: "Category 1", value: "Category 1" },
                   { label: "Category 2", value: "Category 2" },

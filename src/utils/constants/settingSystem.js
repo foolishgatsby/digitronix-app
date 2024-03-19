@@ -10,4 +10,5 @@ export const STATUS_CODE = {
 
 export const TOKEN = "access_token";
 export const USER_LOGIN = "user_login";
+export const USER_ROLE = "user_role";
 export const USER_EMAIL = "user_email";

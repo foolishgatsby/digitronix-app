@@ -1,16 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-
-// antd
-import { Breadcrumb, Flex, Layout, Menu, theme } from "antd";
-import { NotificationFilled, WechatOutlined } from "@ant-design/icons";
-import { Outlet, useLocation, useMatch } from "react-router-dom";
-import { NavLink } from "react-router-dom";
-import Clock from "../../components/Clock/Clock";
+import React, { useState } from "react";
 import { usePathList } from "../../utils/Hooks/usePathList";
-import FunctionPopup from "../../components/FunctionPopup/FunctionPopup";
-import { useDispatch } from "react-redux";
-import { setComponent } from "../../redux/reducers/FunctionPopupReducer";
-const { Header, Content, Footer, Sider } = Layout;
+import { Breadcrumb, Layout } from "antd";
+import Sider from "antd/es/layout/Sider";
+import { NavLink, Outlet } from "react-router-dom";
+import { Content, Footer, Header } from "antd/es/layout/layout";
+import { NotificationFilled, WechatOutlined } from "@ant-design/icons";
+import Clock from "../../components/Clock/Clock";
 
 const activeStyle = (isActive, collapse) => {
   return {
@@ -26,18 +21,13 @@ const activeStyle = (isActive, collapse) => {
   };
 };
 
-export default function AdminTemplate(props) {
+export default function WarehouseTemplates() {
   const [collapsed, setCollapsed] = useState(true);
 
   const pathItem = usePathList();
 
   return (
-    <Layout
-      style={{
-        minHeight: "100vh",
-      }}
-    >
-      <FunctionPopup></FunctionPopup>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider
         trigger={null}
         collapsible
@@ -54,20 +44,13 @@ export default function AdminTemplate(props) {
         }}
         collapsedWidth={50}
         onMouseEnter={() => {
-          // if (collapsed === true) {
-          //   setCollapsed(!collapsed);
-          // }
           setCollapsed(false);
         }}
         onMouseLeave={() => {
-          // if (collapsed === false) {
-          //   setCollapsed(!collapsed);
-          // }
           setCollapsed(true);
         }}
       >
         <div
-          // className="flex justify-end items-center"
           style={{
             background: "#ffd700",
             height: "50px",
@@ -81,28 +64,6 @@ export default function AdminTemplate(props) {
           </button>
         </div>
         <div>
-          <div
-            style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <NavLink
-              to="accounts"
-              className={({ isActive }) => {
-                return isActive ? "active" : "";
-              }}
-              style={({ isActive }) => activeStyle(isActive, collapsed)}
-            >
-              <i
-                className="fa fa-users"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Accounts"}
-            </NavLink>
-          </div>
           <div
             style={{
               width: "100%",
@@ -141,6 +102,7 @@ export default function AdminTemplate(props) {
               style={{
                 width: "100%",
                 textAlign: "center",
+                zIndex: 100,
               }}
               className={`collapse ${collapsed ? "" : "show"}`}
               id="warehouseCollapse"
@@ -166,94 +128,6 @@ export default function AdminTemplate(props) {
                 Materials
               </NavLink>
             </div>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <NavLink
-              to="orders"
-              className={({ isActive }) => {
-                return isActive ? "active" : "";
-              }}
-              style={({ isActive }) => activeStyle(isActive, collapsed)}
-            >
-              <i
-                className="fa fa-file-invoice"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Orders"}
-            </NavLink>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <NavLink
-              to="customers"
-              className={({ isActive }) => {
-                return isActive ? "active" : "";
-              }}
-              style={({ isActive }) => activeStyle(isActive, collapsed)}
-            >
-              <i
-                className="fa fa-handshake"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Customers"}
-            </NavLink>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <NavLink
-              to="deliveries"
-              className={({ isActive }) => {
-                return isActive ? "active" : "";
-              }}
-              style={({ isActive }) => activeStyle(isActive, collapsed)}
-            >
-              <i
-                className="fa fa-truck"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Deliveries"}
-            </NavLink>
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <NavLink
-              to="productions"
-              className={({ isActive }) => {
-                return isActive ? "active" : "";
-              }}
-              style={({ isActive }) => activeStyle(isActive)}
-            >
-              <i
-                className="fa fa-industry"
-                style={{ marginRight: "6px", fontSize: "20px" }}
-              />{" "}
-              {collapsed ? "" : "Productions"}
-            </NavLink>
           </div>
         </div>
       </Sider>

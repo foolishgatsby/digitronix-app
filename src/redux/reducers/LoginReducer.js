@@ -1,20 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { userService } from "../services/UserService";
+import {
+  STATUS_CODE,
+  TOKEN,
+  USER_LOGIN,
+  USER_ROLE,
+} from "../../utils/constants/settingSystem";
 
 // setting const
 
 const initialState = {
-  userLogin: {},
+  userLoginInfo: {},
 };
 
 const LoginReducer = createSlice({
   name: "LoginReducer",
   initialState,
-  reducers: {},
+  reducers: {
+    setUserInfoAction: (state, action) => {
+      const { roleId, token } = action.payload;
+      localStorage.setItem(USER_ROLE, roleId);
+      localStorage.setItem(TOKEN, token);
+      state.userLoginInfo = action.payload;
+    },
+  },
 });
 
-export const {} = LoginReducer.actions;
+export const { setUserInfoAction } = LoginReducer.actions;
 
 export default LoginReducer.reducer;
 
@@ -29,8 +41,12 @@ export const loginApi = (userLogin) => {
   return async (dispatch) => {
     try {
       const result = await userService.login(userLogin);
-
-      console.log(result);
-    } catch (error) {}
+      if (result.status === STATUS_CODE.SUCCESS) {
+        dispatch(setUserInfoAction(result.data));
+      }
+      // console.log(result);
+    } catch (error) {
+      console.log("error", error.response.data);
+    }
   };
 };

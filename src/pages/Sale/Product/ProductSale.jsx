@@ -1,10 +1,6 @@
 import { Input, Select, Table, Tag } from "antd";
 import React from "react";
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-};
-
 const column = [
   {
     title: "Image",
@@ -71,14 +67,15 @@ const data = [
 ];
 
 export default function ProductSale() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="grid grid-cols-10 gap-3">
-      <div className="col-span-6">
-        <Table columns={column} dataSource={data} />
-      </div>
-      <div className="col-span-4">
-        <form className="" onSubmit={handleSubmit}>
-          <div className="mb-3">
+    <div className="mt-3">
+      <div className="mb-3">
+        <form className="flex items-end" onSubmit={handleSubmit}>
+          <div className="w-1/4 me-3">
             <label htmlFor="productName" className="form-label">
               Search Product By Name
             </label>
@@ -88,7 +85,7 @@ export default function ProductSale() {
               placeholder="Enter product's Name"
             />
           </div>
-          <div className="mb-3">
+          <div className="w-1/4 me-3">
             <label htmlFor="productCategory" className="form-label">
               Search Product By Category
             </label>
@@ -110,7 +107,7 @@ export default function ProductSale() {
               ]}
             />
           </div>
-          <div className="mb-3">
+          <div className="w-1/4 me-3">
             <label htmlFor="productTag" className="form-label">
               Search Product By Category
             </label>
@@ -132,7 +129,7 @@ export default function ProductSale() {
               ]}
             />
           </div>
-          <div className="flex justify-end">
+          <div className="w-1/4">
             <button
               type="submit"
               className="btn"
@@ -140,12 +137,16 @@ export default function ProductSale() {
                 backgroundColor: "#FFD700",
                 borderRadius: "15px",
                 fontWeight: "500",
+                padding: "5px 20px",
               }}
             >
               SEARCH
             </button>
           </div>
         </form>
+      </div>
+      <div className="">
+        <Table columns={column} dataSource={data} />
       </div>
     </div>
   );
